@@ -1,9 +1,23 @@
 #!/usr/bin/env python3
-from ansible.plugins.action import ActionModule
+"""Just a sample inventory file"""
+
+from ansible.plugins.inventory import BaseInventoryPlugin
 
 
 class InventoryModule(BaseInventoryPlugin):
+    """Main class for my inventory plugin"""
+
     NAME = "microfocus"
+
+    def verify_file(self, path):
+        """Return true/false if this is possibly a valid file for this plugin to consume"""
+
+        valid = False
+        if super().verify_file(path):
+            # if super().__init__():
+            if path.endswith(("test_inventory.yaml", "test_inventory.yml")):
+                valid = True
+        return valid
 
     def parse(self, inventory, loader, path, cache=True):
         super().parse(inventory, loader, path)
